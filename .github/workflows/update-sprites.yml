@@ -10,7 +10,8 @@ jobs:
   update-sprites:
     timeout-minutes: 20
     runs-on: ubuntu-latest
-
+    env:
+      GH_API_KEY: ${{ secrets.GH_API_KEY }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

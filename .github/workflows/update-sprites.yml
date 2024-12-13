@@ -1,15 +1,14 @@
-name: Convert Images to WebP
+name: Update Sprites
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "images/**"
+  workflow_dispatch:
+  schedule:
+    # Runs at 12:00 AM UTC on Sunday
+    - cron: "0 0 * * 0"
 
 jobs:
-  convert-images:
-    timeout-minutes: 10
+  update-sprites:
+    timeout-minutes: 20
     runs-on: ubuntu-latest
 
     steps:
@@ -22,8 +21,11 @@ jobs:
       - name: Install dependencies
         run: cd .github/workflows && bun install
 
-      - name: Convert images to WebP
-        run: cd .github/workflows && bun convert-to-webp.js
+      - name: update opencollective sprite image
+        run: cd .github/workflows && bun opencollective.js
+
+      - name: update github sprite image
+        run: cd .github/workflows && bun github.js
 
       - name: Configure Git
         run: |
@@ -33,7 +35,7 @@ jobs:
       - name: Commit changes
         run: |
           git add .
-          git diff-index --quiet HEAD || git commit -m "Convert images to WebP"
+          git diff-index --quiet HEAD || git commit -m "Update sprites"
 
       - name: Push changes
         uses: ad-m/github-push-action@master

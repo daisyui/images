@@ -2,8 +2,8 @@ import sharp from "sharp";
 import fs from "fs/promises";
 
 const url = "https://opencollective.com/daisyui/members/all.json";
-const outputImage = "../../generated/open-collective/sprite.webp";
-const outputJson = "../../generated/open-collective/sprite.json";
+const outputImage = "../../generated/open-collective/contributors.webp";
+const outputJson = "../../generated/open-collective/contributors.json";
 
 async function fetchMembers() {
   const response = await fetch(url);
@@ -28,10 +28,10 @@ async function createTransparentImage() {
 
 async function createSprite(members) {
   const images = [];
-  const names = [];
+  const membersData = [];
 
   for (const member of members) {
-    names.push(member.name);
+    const memberData = { name: member.name, image: false };
 
     if (member.image) {
       try {
@@ -40,6 +40,7 @@ async function createSprite(members) {
         const buffer = Buffer.from(arrayBuffer);
         const resizedImage = await sharp(buffer).resize(64, 64).toBuffer();
         images.push(resizedImage);
+        memberData.image = true;
       } catch (error) {
         console.error(
           `Failed to process image for member ${member.name}:`,
@@ -52,6 +53,8 @@ async function createSprite(members) {
       const transparentImage = await createTransparentImage();
       images.push(transparentImage);
     }
+
+    membersData.push(memberData);
   }
 
   const sprite = await sharp({
@@ -74,7 +77,7 @@ async function createSprite(members) {
 
   await fs.mkdir("../../generated/open-collective", { recursive: true });
   await fs.writeFile(outputImage, sprite);
-  await fs.writeFile(outputJson, JSON.stringify(names, null, 2));
+  await fs.writeFile(outputJson, JSON.stringify(membersData, null, null));
 }
 
 async function main() {

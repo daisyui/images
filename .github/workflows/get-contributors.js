@@ -4,8 +4,8 @@ import path from "path";
 
 // Configuration
 const GH_API_KEY = process.env.GH_API_KEY;
-const outputImage = "../../generated/github/contributors.webp";
-const outputJson = "../../generated/github/contributors.json";
+const outputImage = "../../generated/contributors.webp";
+const outputJson = "../../generated/contributors.json";
 const PER_PAGE = 100;
 
 const createGithubApiUrl = (page) =>
@@ -92,7 +92,8 @@ async function processContributors(contributors) {
       images.push(transparentImage);
     }
 
-    contributorsData.push(contributorData);
+    // contributorsData.push(contributorData);
+    contributorsData.push(login);
   }
 
   return { images, contributorsData };

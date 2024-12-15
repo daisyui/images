@@ -23,10 +23,10 @@ jobs:
         run: cd .github/workflows && bun install
 
       - name: update opencollective sprite image
-        run: cd .github/workflows && bun get-opencollective-contributors.js
+        run: cd .github/workflows && bun get-sponsors.js
 
       - name: update github sprite image
-        run: cd .github/workflows && bun get-github-contributors.js
+        run: cd .github/workflows && bun get-contributors.js
 
       - name: Configure Git
         run: |

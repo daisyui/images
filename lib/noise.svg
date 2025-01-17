@@ -1,0 +1,1 @@
+<svg xmlns='http://www.w3.org/2000/svg'><filter id='a'><feTurbulence type='fractalNoise' baseFrequency='1.34' numOctaves='4' stitchTiles='stitch'></feTurbulence></filter><rect width='100%' height='100%' filter='url(#a)' opacity='0.2'></rect></svg>

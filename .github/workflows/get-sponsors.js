@@ -91,7 +91,7 @@ async function saveFiles(spriteBuffer, membersData) {
     }
   }
   await fs.writeFile(outputImage, spriteBuffer);
-  await fs.writeFile(outputJson, JSON.stringify(membersData, null, 2));
+  await fs.writeFile(outputJson, JSON.stringify(membersData, null, null));
 }
 
 async function main() {

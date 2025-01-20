@@ -84,12 +84,14 @@ async function createSpriteImage(images) {
 async function saveFiles(spriteBuffer, membersData) {
   const dir = path.dirname(outputImage);
   try {
-    await fs.access(dir);
-  } catch {
     await fs.mkdir(dir, { recursive: true });
+  } catch (error) {
+    if (error.code !== "EEXIST") {
+      throw error;
+    }
   }
   await fs.writeFile(outputImage, spriteBuffer);
-  await fs.writeFile(outputJson, JSON.stringify(membersData, null, null));
+  await fs.writeFile(outputJson, JSON.stringify(membersData, null, 2));
 }
 
 async function main() {

@@ -12,7 +12,7 @@ async function readTestimonials() {
   try {
     const data = await fs.readFile(TESTIMONIALS_FILE, "utf8");
     const jsonData = JSON.parse(data);
-    return jsonData.tweets || []; // Access the tweets array from the JSON
+    return jsonData || [];
   } catch (error) {
     throw new Error(`Failed to read testimonials file: ${error.message}`);
   }

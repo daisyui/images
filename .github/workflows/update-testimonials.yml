@@ -1,0 +1,37 @@
+name: Update Testimonials
+
+on:
+  workflow_dispatch:
+
+jobs:
+  convert-images:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v1.2.2
+
+      - name: Install dependencies
+        run: cd .github/workflows && bun install
+
+      - name: Get testimonials
+        run: cd .github/workflows && bun get-testimonials.js
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "pouya.saadeghi@gmail.com"
+          git config --local user.name "Pouya Saadeghi"
+
+      - name: Commit changes
+        run: |
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Convert images to WebP"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}

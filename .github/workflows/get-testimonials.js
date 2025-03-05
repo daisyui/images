@@ -3,20 +3,19 @@ import fs from "fs/promises";
 import path from "path";
 
 // Configuration
-const API_URL = "https://api.daisyui.com/api/testimonials.json";
+const TESTIMONIALS_FILE = "../../data/testimonials.json";
 const OUTPUT_IMAGE = "../../generated/x.webp";
 const IMAGE_SIZE = 72;
 
-async function fetchTestimonials() {
-  console.log("Fetching testimonials...");
-  const response = await fetch(API_URL);
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch data: ${response.statusText}`);
+async function readTestimonials() {
+  console.log("Reading testimonials from file...");
+  try {
+    const data = await fs.readFile(TESTIMONIALS_FILE, "utf8");
+    const jsonData = JSON.parse(data);
+    return jsonData.tweets || []; // Access the tweets array from the JSON
+  } catch (error) {
+    throw new Error(`Failed to read testimonials file: ${error.message}`);
   }
-
-  const data = await response.json();
-  return data.tweets || []; // Access the tweets array from the response
 }
 
 async function createTransparentImage() {
@@ -68,7 +67,6 @@ async function processTestimonials(testimonials) {
 }
 
 async function createSpriteImage(images) {
-  // Don't create sprite if there are no images
   if (images.length === 0) {
     throw new Error("No images to process");
   }
@@ -106,7 +104,7 @@ async function saveFile(spriteBuffer) {
 
 async function main() {
   try {
-    const testimonials = await fetchTestimonials();
+    const testimonials = await readTestimonials();
     console.log(`Processing ${testimonials.length} testimonials...`);
 
     if (testimonials.length === 0) {

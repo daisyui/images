@@ -1,18 +1,20 @@
 import sharp from "sharp";
 import fs from "fs/promises";
 import path from "path";
+import yaml from "js-yaml";
 
 // Configuration
-const TESTIMONIALS_FILE = "../../data/testimonials.json";
+const TESTIMONIALS_FILE = "../../data/testimonials.yaml";
 const OUTPUT_IMAGE = "../../generated/x.webp";
+const OUTPUT_JSON = "../../generated/testimonials.json";
 const IMAGE_SIZE = 72;
 
 async function readTestimonials() {
   console.log("Reading testimonials from file...");
   try {
     const data = await fs.readFile(TESTIMONIALS_FILE, "utf8");
-    const jsonData = JSON.parse(data);
-    return jsonData || [];
+    const yamlData = yaml.load(data);
+    return yamlData || [];
   } catch (error) {
     throw new Error(`Failed to read testimonials file: ${error.message}`);
   }
@@ -31,9 +33,15 @@ async function createTransparentImage() {
     .toBuffer();
 }
 
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 async function processAvatar(username) {
   try {
-    const avatarUrl = `https://unavatar.io/x/${username}?fallback=false`;
+    await delay(2000);
+
+    const avatarUrl = `https://unavatar.io/x/${username}?fallback=false&ttl=28d`;
     const response = await fetch(avatarUrl, {
       headers: {
         "User-Agent":
@@ -50,20 +58,26 @@ async function processAvatar(username) {
     return await sharp(buffer).resize(IMAGE_SIZE, IMAGE_SIZE).toBuffer();
   } catch (error) {
     console.error(`Failed to process image for ${username}:`, error);
-    return createTransparentImage();
+    throw error; // Re-throw the error instead of returning transparent image
   }
 }
 
 async function processTestimonials(testimonials) {
   const images = [];
+  const successfulTestimonials = [];
 
   for (const testimonial of testimonials) {
-    const image = await processAvatar(testimonial.username);
-    images.push(image);
-    console.log(`Processed avatar for: ${testimonial.username}`);
+    try {
+      const image = await processAvatar(testimonial.username);
+      images.push(image);
+      successfulTestimonials.push(testimonial);
+      console.log(`Processed avatar for: ${testimonial.username}`);
+    } catch (error) {
+      console.log(`Skipping ${testimonial.username} due to error`);
+    }
   }
 
-  return images;
+  return { images, successfulTestimonials };
 }
 
 async function createSpriteImage(images) {
@@ -102,6 +116,22 @@ async function saveFile(spriteBuffer) {
   await fs.writeFile(OUTPUT_IMAGE, spriteBuffer);
 }
 
+async function saveJson(testimonials) {
+  const dir = path.dirname(OUTPUT_JSON);
+  try {
+    await fs.mkdir(dir, { recursive: true });
+  } catch (error) {
+    if (error.code !== "EEXIST") {
+      throw error;
+    }
+  }
+  await fs.writeFile(
+    OUTPUT_JSON,
+    JSON.stringify(testimonials, null, 2),
+    "utf8",
+  );
+}
+
 async function main() {
   try {
     const testimonials = await readTestimonials();
@@ -112,11 +142,24 @@ async function main() {
       process.exit(1);
     }
 
-    const images = await processTestimonials(testimonials);
+    const { images, successfulTestimonials } =
+      await processTestimonials(testimonials);
+
+    if (images.length === 0) {
+      console.error("No valid images processed");
+      process.exit(1);
+    }
+
     const spriteBuffer = await createSpriteImage(images);
     await saveFile(spriteBuffer);
+    await saveJson(successfulTestimonials);
 
-    console.log("Sprite image created successfully.");
+    console.log(
+      `Sprite image created successfully with ${images.length} images.`,
+    );
+    console.log(
+      `JSON file created with ${successfulTestimonials.length} testimonials.`,
+    );
   } catch (error) {
     console.error("Error:", error);
     process.exit(1);

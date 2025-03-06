@@ -8,7 +8,7 @@
 
 - id: "1534886647850221571"
   content: >-
-    If you want to build beautiful apps in no time, daisyUI is the way to go ✨
+    If you want to *build beautiful apps in no time*, daisyUI is the way to go ✨
     I've been using it for the past 6 months and can't imagine living without
     it...
   name: Marc Lou
@@ -257,12 +257,6 @@
   name: Aaron Moy
   username: MrAaronMoy
   bio: Founder
-
-- id: "1763203857184657800"
-  content: Thanks daisyUI for making CSS themes so easy
-  name: Jaime
-  username: JaimeIniestaDev
-  bio: Backend engineer
 
 - id: "1771033378877501762"
   content: Damn, daisyUI is NICE!

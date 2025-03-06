@@ -125,11 +125,13 @@ async function saveJson(testimonials) {
       throw error;
     }
   }
-  await fs.writeFile(
-    OUTPUT_JSON,
-    JSON.stringify(testimonials, null, 2),
-    "utf8",
-  );
+
+  const outputData = {
+    generated_at: new Date().toISOString(),
+    testimonials: testimonials,
+  };
+
+  await fs.writeFile(OUTPUT_JSON, JSON.stringify(outputData, null, 2), "utf8");
 }
 
 async function main() {

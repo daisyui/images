@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-03-06T06:28:23.926Z",
+  "generated_at": "2025-03-06T06:57:20.184Z",
   "testimonials": [
     {
       "id": "1633913146422198276",
@@ -10,7 +10,7 @@
     },
     {
       "id": "1534886647850221571",
-      "content": "If you want to build beautiful apps in no time, daisyUI is the way to go ✨ I've been using it for the past 6 months and can't imagine living without it...",
+      "content": "If you want to *build beautiful apps in no time*, daisyUI is the way to go ✨ I've been using it for the past 6 months and can't imagine living without it...",
       "name": "Marc Lou",
       "username": "marc_louvion",
       "bio": "Solopreneur"
@@ -252,13 +252,6 @@
       "name": "Aaron Moy",
       "username": "MrAaronMoy",
       "bio": "Founder"
-    },
-    {
-      "id": "1763203857184657800",
-      "content": "Thanks daisyUI for making CSS themes so easy",
-      "name": "Jaime",
-      "username": "JaimeIniestaDev",
-      "bio": "Backend engineer"
     },
     {
       "id": "1771033378877501762",

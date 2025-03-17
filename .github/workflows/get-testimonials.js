@@ -20,19 +20,6 @@ async function readTestimonials() {
   }
 }
 
-async function createTransparentImage() {
-  return sharp({
-    create: {
-      width: IMAGE_SIZE,
-      height: IMAGE_SIZE,
-      channels: 4,
-      background: { r: 0, g: 0, b: 0, alpha: 0 },
-    },
-  })
-    .png()
-    .toBuffer();
-}
-
 function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -41,7 +28,7 @@ async function processAvatar(username) {
   try {
     await delay(2000);
 
-    const avatarUrl = `https://unavatar.io/x/${username}?fallback=false&ttl=28d`;
+    const avatarUrl = `https://unavatar.io/x/@${username}?fallback=false&ttl=28d`;
     const response = await fetch(avatarUrl, {
       headers: {
         "User-Agent":

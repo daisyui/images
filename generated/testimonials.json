@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-03-06T07:20:28.529Z",
+  "generated_at": "2025-03-17T10:36:37.751Z",
   "testimonials": [
     {
       "id": "1633913146422198276",
@@ -52,28 +52,28 @@
     },
     {
       "id": "1657034356454576130",
-      "content": "daisyui is awesome!",
+      "content": "daisyUI is awesome!",
       "name": "borislav grigorov",
       "username": "Brslv",
       "bio": "Indiehacker"
     },
     {
       "id": "1658134686177153024",
-      "content": "daisyUI is *such a time saver*",
+      "content": "daisyUI is such a *time saver*",
       "name": "Ollie The Dev",
       "username": "olliethedev",
       "bio": "Amplify UI, texttodesign.ai"
     },
     {
       "id": "1654010583673634822",
-      "content": "Using daisyui feels like using the old Bootstrap but with the additional power of Tailwind's customization.",
+      "content": "Using daisyUI feels like using the old Bootstrap but with the additional power of Tailwind's customization.",
       "name": "Mazipan",
       "username": "Maz_Ipan",
       "bio": "Software developer"
     },
     {
       "id": "1645460935044112385",
-      "content": "I recommend you to use DaisyUi on top of Tailwind they work together and gives more possibilities and ease.",
+      "content": "I recommend you to use daisyUI on top of Tailwind they work together and gives more possibilities and ease.",
       "name": "Christophe Anfry",
       "username": "ChristopheAnfry",
       "bio": "Ex Google Workspace technical support"
@@ -122,7 +122,7 @@
     },
     {
       "id": "1709060061790945349",
-      "content": "I was using bootstrap first than switched to tailwind but there's so many classes too much code, than i found daisyUI. if anyone coming from bootstrapcss background you will love daisyui for sure. 🙌",
+      "content": "I was using bootstrap first than switched to tailwind but there's so many classes too much code, than i found daisyUI. if anyone coming from bootstrapcss background you will love daisyUI for sure. 🙌",
       "name": "Jagdish kashyap",
       "username": "Jagdish1O1",
       "bio": "Software developer"
@@ -157,7 +157,7 @@
     },
     {
       "id": "1707143402494873936",
-      "content": "I would have never touched tailwindcss if it wasn't for daisyUI 🤗",
+      "content": "I would have never touched Tailwind CSS if it wasn't for daisyUI 🤗",
       "name": "lang",
       "username": "mgilangjanuar",
       "bio": "Software developer"
@@ -206,7 +206,7 @@
     },
     {
       "id": "1783878393055805826",
-      "content": "I use daisyui for every site now!",
+      "content": "I use daisyUI for every site now!",
       "name": "TikitaTech",
       "username": "TikitaTech",
       "bio": "Indie hacker"
@@ -282,11 +282,25 @@
       "bio": "Ruby on Rails Developer"
     },
     {
+      "id": "1882466817735864384",
+      "content": "daisyUI v5 is a *game changer*... It's never been this easy to customize components and theme in typical server rendered projects. 😍",
+      "name": "iam_bpn",
+      "username": "iambepin",
+      "bio": "Developer"
+    },
+    {
       "id": "1878037793353707886",
       "content": "Been a big fan on daisyUI for 2 years, kudos to your great work! 👏👏",
       "name": "Kenn Ejima",
       "username": "kenn",
       "bio": "Co-Founder & CTO"
+    },
+    {
+      "id": "1875195239025230182",
+      "content": "daisyUI 5 + Tailwind CSS 4 is just an amazing combo for fast and high-end results",
+      "name": "Nacho Herrera",
+      "username": "bitsofnacho",
+      "bio": "Developer"
     },
     {
       "id": "1875102579975401498",
@@ -297,14 +311,14 @@
     },
     {
       "id": "1873774608547246239",
-      "content": "daisyUI is so usefull. My clients love the look, it is so easy",
+      "content": "daisyUI is *so usefull*. My clients love the look, it is so easy",
       "name": "Bailey Burnsed",
       "username": "baileyburnsed",
       "bio": "Full Stack Dev"
     },
     {
       "id": "1871234870435078619",
-      "content": "Love daisyUI, excited to use it again on my next job",
+      "content": "*Love daisyUI*, excited to use it again on my next job",
       "name": "Steve Williams",
       "username": "tweetsbysteve",
       "bio": "Applications developer"
@@ -315,6 +329,13 @@
       "name": "Dorian Develops",
       "username": "DorianDevelops",
       "bio": "Self-Taught Programmer"
+    },
+    {
+      "id": "1865109526757744739",
+      "content": "I found daisyUI to be an amazing pair with htmx",
+      "name": "Ryan Dsouza",
+      "username": "ryands1701",
+      "bio": "DevOps enthusiast"
     },
     {
       "id": "1863252629767311392",
@@ -329,6 +350,20 @@
       "name": "Bogdan Chayka",
       "username": "ChaykaBogdan",
       "bio": "Founder"
+    },
+    {
+      "id": "1853527642860818576",
+      "content": "Rails 8 + daisyUI = MVP Magic",
+      "name": "Kaleb Lape",
+      "username": "RailsQuest",
+      "bio": "Rails developer"
+    },
+    {
+      "id": "1890763198153838966",
+      "content": "How much winning can one component library take?!?",
+      "name": "htmx.org",
+      "username": "htmx_org",
+      "bio": "high power tools for HTML"
     },
     {
       "id": "1765987410343559635",
@@ -353,10 +388,17 @@
     },
     {
       "id": "1896259963234005395",
-      "content": "I use DaisyUi in every project",
+      "content": "I use daisyUI in every project",
       "name": "Stu Kennedy",
       "username": "stukennedymusic",
       "bio": "AI Solutions Architect"
+    },
+    {
+      "id": "1896193358097535350",
+      "content": "If you're a fan of Tailwind but hate writing 20+ class names to style a simple button or card, try daisyUI, it's really cool!",
+      "name": "AbdulAzeez",
+      "username": "dev_azeez",
+      "bio": "Software Developer"
     },
     {
       "id": "1896134929194598571",
@@ -373,8 +415,29 @@
       "bio": "Co-Founder & CTO"
     },
     {
+      "id": "1895951463240843555",
+      "content": "daisyUI is the only way to use tailwind",
+      "name": "Suspect",
+      "username": "0xds102",
+      "bio": "Dev"
+    },
+    {
+      "id": "1895644145961799775",
+      "content": "daisyUI is a *joy to use* 🙏",
+      "name": "Oli Nelson",
+      "username": "o_j_nelson",
+      "bio": "Indie Software Dev"
+    },
+    {
+      "id": "1894847690548064573",
+      "content": "Found the power of tailwindcss and daisyUI these last few days. These makes front-end development so much *faster and enjoyable*.",
+      "name": "Lourenço Matalonga",
+      "username": "Lou_Matalonga",
+      "bio": "Developer, Indie Hacker"
+    },
+    {
       "id": "1894470049722671169",
-      "content": "I absolutely love daisyUI and use it in all my projects.",
+      "content": "I *absolutely love daisyUI* and use it in all my projects.",
       "name": "Cam Pak",
       "username": "CameronPak",
       "bio": "Developer"

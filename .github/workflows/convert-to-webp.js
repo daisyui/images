@@ -2,6 +2,11 @@ import fs from "node:fs";
 import path from "node:path";
 import sharp from "sharp";
 
+const shouldSkipPath = (filePath) => {
+  const excludePaths = ["../../images/daisyui-logo", "../../images/daisyui"];
+  return excludePaths.some((excludePath) => filePath.includes(excludePath));
+};
+
 // Function to recursively find all PNG and JPG images
 const findImages = (directory) => {
   let images = [];
@@ -11,9 +16,13 @@ const findImages = (directory) => {
     const stat = fs.statSync(filePath);
 
     if (stat.isDirectory()) {
-      images = images.concat(findImages(filePath));
+      // Skip processing if the directory path matches excluded paths
+      if (!shouldSkipPath(filePath)) {
+        images = images.concat(findImages(filePath));
+      }
     } else {
-      if (file.match(/\.(png|jpe?g)$/i)) {
+      // Skip processing if the file path matches excluded paths
+      if (!shouldSkipPath(filePath) && file.match(/\.(png|jpe?g)$/i)) {
         images.push(filePath);
       }
     }

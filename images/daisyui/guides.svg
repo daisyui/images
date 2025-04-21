@@ -1,4 +1,4 @@
-<svg width="2000" height="1000" viewBox="0 0 2000 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 2000 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="2000" height="1000" fill="white"/>
 <line x1="249" y1="205" x2="249" y2="803" stroke="#EA0000" stroke-opacity="0.4" stroke-width="2" stroke-linecap="round"/>
 <line x1="699" y1="205" x2="699" y2="803" stroke="#EA0000" stroke-opacity="0.4" stroke-width="2" stroke-linecap="round"/>

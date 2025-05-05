@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-03-17T10:36:37.751Z",
+  "generated_at": "2025-05-05T12:12:45.599Z",
   "testimonials": [
     {
       "id": "1633913146422198276",
@@ -303,13 +303,6 @@
       "bio": "Developer"
     },
     {
-      "id": "1875102579975401498",
-      "content": "Wow, daisyUI v5 is crazy",
-      "name": "nev the dev",
-      "username": "BremNeville",
-      "bio": "Indie web dev"
-    },
-    {
       "id": "1873774608547246239",
       "content": "daisyUI is *so usefull*. My clients love the look, it is so easy",
       "name": "Bailey Burnsed",
@@ -346,7 +339,7 @@
     },
     {
       "id": "1861457237786665268",
-      "content": "With daisyUI I haven’t written a single line of css, yet my div classes are pretty clean",
+      "content": "With daisyUI I haven't written a single line of css, yet my div classes are pretty clean",
       "name": "Bogdan Chayka",
       "username": "ChaykaBogdan",
       "bio": "Founder"
@@ -387,13 +380,6 @@
       "bio": "Software craftman"
     },
     {
-      "id": "1896259963234005395",
-      "content": "I use daisyUI in every project",
-      "name": "Stu Kennedy",
-      "username": "stukennedymusic",
-      "bio": "AI Solutions Architect"
-    },
-    {
       "id": "1896193358097535350",
       "content": "If you're a fan of Tailwind but hate writing 20+ class names to style a simple button or card, try daisyUI, it's really cool!",
       "name": "AbdulAzeez",
@@ -409,7 +395,7 @@
     },
     {
       "id": "1895956306651201605",
-      "content": "*daisyUI is underrated.* The best mix of Bootstrap (semantic) + Tailwind (utility). Just pick your colors and go. Supports most common components. Now with Tailwind v4. Theme builder. Quick adjustment with Tailwind. *CSS only and no JS. Zero dependencies.* DHH’s “No build” friendly.",
+      "content": "*daisyUI is underrated.* The best mix of Bootstrap (semantic) + Tailwind (utility). Just pick your colors and go. Supports most common components. Now with Tailwind v4. Theme builder. Quick adjustment with Tailwind. *CSS only and no JS. Zero dependencies.* DHH's \"No build\" friendly.",
       "name": "Kenn Ejima",
       "username": "kenn",
       "bio": "Co-Founder & CTO"
@@ -441,6 +427,81 @@
       "name": "Cam Pak",
       "username": "CameronPak",
       "bio": "Developer"
+    },
+    {
+      "id": "1909629944130424880",
+      "content": "DaisyUI is really goated! I am a happy user for the past 5 years.",
+      "name": "Nithur",
+      "username": "NithurM",
+      "bio": "Developer"
+    },
+    {
+      "id": "1909462640788996236",
+      "content": "DaisyUI is pretty amazing",
+      "name": "Shawn",
+      "username": "shawnmvn",
+      "bio": "Developer"
+    },
+    {
+      "id": "1909498182616379418",
+      "content": "daisyUI makes working with UI components *so easy*",
+      "name": "Jason",
+      "username": "jasoki",
+      "bio": "Indie Game Dev"
+    },
+    {
+      "id": "1896254534353297851",
+      "content": "daisyUI is so good! I love how it sticks with the basic HTML components. Truly great.",
+      "name": "Nico Devs",
+      "username": "nicodevs",
+      "bio": "Software Engineer"
+    },
+    {
+      "id": "1903945275913179413",
+      "content": "I used daisyUI theme generator's Halloween theme and tweaked it to what I want and now, I'm so proud of what I've got!",
+      "name": "Ade",
+      "username": "Ade_the_great",
+      "bio": "Software Engineer"
+    },
+    {
+      "id": "1900914834918547475",
+      "content": "I've been *enjoying daisyui* since I discovered it very recently, great job!",
+      "name": "Vincent Bergeron",
+      "username": "vbergerondev",
+      "bio": "Software Developer"
+    },
+    {
+      "id": "1899737540439253128",
+      "content": "The new daisyUI 5.0 is awesome! The UI components are smooth and has a lot of new goodies.",
+      "name": "Ovi Stoica",
+      "username": "ovstoica",
+      "bio": "Software Developer"
+    },
+    {
+      "id": "1899887103947014379",
+      "content": "daisyUI is probably the *best Tailwind Plugin I've ever used*, I've been using it since 2023",
+      "name": "Shaun Furtado",
+      "username": "shaun_furtado",
+      "bio": "JS dev"
+    },
+    {
+      "id": "1899818430011736074",
+      "content": "Can't state how much I love daisyUI ♥️",
+      "name": "rootkid",
+      "username": "rootkid",
+      "bio": "Software Developer"
+    },
+    {
+      "id": "1911652832664752410",
+      "content": "DaisyUI just looks amazing.",
+      "name": "Kelvin Htat",
+      "username": "kelvinhtat",
+      "bio": "Solo founder"
     }
-  ]
+  ],
+  "sprite": {
+    "imagesPerRow": 227,
+    "rows": 1,
+    "avatarSize": 72
+  }
 }

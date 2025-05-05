@@ -357,7 +357,7 @@
 
 - id: "1861457237786665268"
   content: >-
-    With daisyUI I haven’t written a single line of css, yet my
+    With daisyUI I haven't written a single line of css, yet my
     div classes are pretty clean
   name: Bogdan Chayka
   username: ChaykaBogdan
@@ -429,7 +429,7 @@
     Tailwind (utility). Just pick your colors and go.
     Supports most common components. Now with Tailwind v4. Theme builder.
     Quick adjustment with Tailwind. *CSS only and no JS. Zero dependencies.*
-    DHH’s “No build” friendly.
+    DHH's "No build" friendly.
   name: Kenn Ejima
   username: kenn
   bio: Co-Founder & CTO
@@ -462,3 +462,68 @@
   name: Cam Pak
   username: CameronPak
   bio: Developer
+- id: "1909629944130424880"
+  content: >-
+    DaisyUI is really goated! I am a happy user for the past 5 years.
+  name: Nithur
+  username: NithurM
+  bio: Developer
+- id: "1909462640788996236"
+  content: >-
+    DaisyUI is pretty amazing
+  name: Shawn
+  username: shawnmvn
+  bio: Developer
+- id: "1909498182616379418"
+  content: >-
+    daisyUI makes working with UI components *so easy*
+  name: Jason
+  username: jasoki
+  bio: Indie Game Dev
+- id: "1896254534353297851"
+  content: >-
+    daisyUI is so good! I love how it sticks with the basic HTML components.
+    Truly great.
+  name: Nico Devs
+  username: nicodevs
+  bio: Software Engineer
+- id: "1903945275913179413"
+  content: >-
+    I used daisyUI theme generator's Halloween theme and tweaked it to what
+    I want and now, I'm so proud of what I've got!
+  name: Ade
+  username: Ade_the_great
+  bio: Software Engineer
+- id: "1900914834918547475"
+  content: >-
+    I've been *enjoying daisyui* since I discovered it very recently, great
+    job!
+  name: Vincent Bergeron
+  username: vbergerondev
+  bio: Software Developer
+- id: "1899737540439253128"
+  content: >-
+    The new daisyUI 5.0 is awesome! The UI components are smooth and has a
+    lot of new goodies.
+  name: Ovi Stoica
+  username: ovstoica
+  bio: Software Developer
+- id: "1899887103947014379"
+  content: >-
+    daisyUI is probably the *best Tailwind Plugin I've ever used*, I've been
+    using it since 2023
+  name: Shaun Furtado
+  username: shaun_furtado
+  bio: JS dev
+- id: "1899818430011736074"
+  content: >-
+    Can't state how much I love daisyUI ♥️
+  name: rootkid
+  username: rootkid
+  bio: Software Developer
+- id: "1911652832664752410"
+  content: >-
+    DaisyUI just looks amazing.
+  name: Kelvin Htat
+  username: kelvinhtat
+  bio: Solo founder

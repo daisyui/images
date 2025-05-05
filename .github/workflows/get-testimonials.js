@@ -8,6 +8,7 @@ const TESTIMONIALS_FILE = "../../data/testimonials.yaml";
 const OUTPUT_IMAGE = "../../generated/x.webp";
 const OUTPUT_JSON = "../../generated/testimonials.json";
 const IMAGE_SIZE = 72;
+const MAX_WEBP_WIDTH = 16383; // Maximum width for WebP images
 
 async function readTestimonials() {
   console.log("Reading testimonials from file...");
@@ -72,20 +73,37 @@ async function createSpriteImage(images) {
     throw new Error("No images to process");
   }
 
+  // Calculate how many images can fit in a row based on MAX_WEBP_WIDTH
+  const imagesPerRow = Math.floor(MAX_WEBP_WIDTH / IMAGE_SIZE);
+  // Calculate how many rows are needed
+  const rows = Math.ceil(images.length / imagesPerRow);
+  
+  // Calculate the actual width (might be less than MAX_WEBP_WIDTH for the last row)
+  const lastRowImageCount = images.length % imagesPerRow || imagesPerRow;
+  const width = Math.min(IMAGE_SIZE * imagesPerRow, MAX_WEBP_WIDTH);
+  const height = rows * IMAGE_SIZE;
+  
+  console.log(`Creating sprite with dimensions ${width}x${height}, ${rows} rows`);
+  
   return sharp({
     create: {
-      width: IMAGE_SIZE * images.length,
-      height: IMAGE_SIZE,
+      width: width,
+      height: height,
       channels: 4,
       background: { r: 0, g: 0, b: 0, alpha: 0 },
     },
   })
     .composite(
-      images.map((image, index) => ({
-        input: image,
-        top: 0,
-        left: IMAGE_SIZE * index,
-      })),
+      images.map((image, index) => {
+        const row = Math.floor(index / imagesPerRow);
+        const col = index % imagesPerRow;
+        
+        return {
+          input: image,
+          top: row * IMAGE_SIZE,
+          left: col * IMAGE_SIZE,
+        };
+      })
     )
     .webp({ quality: 100 })
     .toBuffer();
@@ -113,9 +131,18 @@ async function saveJson(testimonials) {
     }
   }
 
+  // Calculate sprite dimensions for the metadata
+  const imagesPerRow = Math.floor(MAX_WEBP_WIDTH / IMAGE_SIZE);
+  const rows = Math.ceil(testimonials.length / imagesPerRow);
+
   const outputData = {
     generated_at: new Date().toISOString(),
     testimonials: testimonials,
+    sprite: {
+      imagesPerRow,
+      rows,
+      avatarSize: IMAGE_SIZE
+    }
   };
 
   await fs.writeFile(OUTPUT_JSON, JSON.stringify(outputData, null, 2), "utf8");

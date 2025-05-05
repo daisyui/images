@@ -5,6 +5,8 @@ import path from "path";
 const url = "https://opencollective.com/daisyui/members/all.json";
 const outputImage = "../../generated/sponsors.webp";
 const outputJson = "../../generated/sponsors.json";
+const MAX_WEBP_WIDTH = 16383; // Maximum width for WebP images
+const AVATAR_SIZE = 64; // Size of each avatar in pixels
 
 async function fetchMembers() {
   const response = await fetch(url);
@@ -62,20 +64,39 @@ async function processMembers(members) {
 }
 
 async function createSpriteImage(images) {
+  // Calculate how many images can fit in a row based on MAX_WEBP_WIDTH
+  const imagesPerRow = Math.floor(MAX_WEBP_WIDTH / AVATAR_SIZE);
+  // Calculate how many rows are needed
+  const rows = Math.ceil(images.length / imagesPerRow);
+
+  // Calculate the actual width (might be less than MAX_WEBP_WIDTH for the last row)
+  const lastRowImageCount = images.length % imagesPerRow || imagesPerRow;
+  const width = Math.min(AVATAR_SIZE * imagesPerRow, MAX_WEBP_WIDTH);
+  const height = rows * AVATAR_SIZE;
+
+  console.log(
+    `Creating sprite with dimensions ${width}x${height}, ${rows} rows`
+  );
+
   return sharp({
     create: {
-      width: 64 * images.length,
-      height: 64,
+      width: width,
+      height: height,
       channels: 4,
       background: { r: 0, g: 0, b: 0, alpha: 0 },
     },
   })
     .composite(
-      images.map((image, index) => ({
-        input: image,
-        top: 0,
-        left: 64 * index,
-      })),
+      images.map((image, index) => {
+        const row = Math.floor(index / imagesPerRow);
+        const col = index % imagesPerRow;
+
+        return {
+          input: image,
+          top: row * AVATAR_SIZE,
+          left: col * AVATAR_SIZE,
+        };
+      })
     )
     .webp()
     .toBuffer();
@@ -90,8 +111,26 @@ async function saveFiles(spriteBuffer, membersData) {
       throw error;
     }
   }
+
+  // Calculate sprite dimensions for the metadata
+  const imagesPerRow = Math.floor(MAX_WEBP_WIDTH / AVATAR_SIZE);
+  const rows = Math.ceil(membersData.length / imagesPerRow);
+
+  const metadata = {
+    sponsors: membersData,
+    sprite: {
+      imagesPerRow,
+      rows,
+      avatarSize: AVATAR_SIZE,
+    },
+  };
+
   await fs.writeFile(outputImage, spriteBuffer);
-  await fs.writeFile(outputJson, JSON.stringify(membersData, null, null));
+  await fs.writeFile(outputJson, JSON.stringify(metadata, null, 2));
+
+  console.log(
+    `Sprite created with ${rows} rows and ${imagesPerRow} images per row`
+  );
 }
 
 async function main() {

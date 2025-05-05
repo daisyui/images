@@ -7,6 +7,8 @@ const GH_API_KEY = process.env.GH_API_KEY;
 const outputImage = "../../generated/contributors.webp";
 const outputJson = "../../generated/contributors.json";
 const PER_PAGE = 100;
+const MAX_WEBP_WIDTH = 16383; // Maximum width for WebP images
+const AVATAR_SIZE = 64; // Size of each avatar in pixels
 
 const createGithubApiUrl = (page) =>
   `https://api.github.com/repos/saadeghi/daisyui/contributors?page=${page}&per_page=${PER_PAGE}`;
@@ -37,13 +39,13 @@ async function fetchAllContributors() {
 
     if (contributors.length < PER_PAGE) {
       console.log(
-        `Page ${currentPage} returned ${contributors.length} contributors (less than ${PER_PAGE}). Stopping.`,
+        `Page ${currentPage} returned ${contributors.length} contributors (less than ${PER_PAGE}). Stopping.`
       );
       break;
     }
 
     console.log(
-      `Page ${currentPage} returned ${contributors.length} contributors. Fetching next page...`,
+      `Page ${currentPage} returned ${contributors.length} contributors. Fetching next page...`
     );
     currentPage++;
   }
@@ -100,20 +102,39 @@ async function processContributors(contributors) {
 }
 
 async function createSpriteImage(images) {
+  // Calculate how many images can fit in a row based on MAX_WEBP_WIDTH
+  const imagesPerRow = Math.floor(MAX_WEBP_WIDTH / AVATAR_SIZE);
+  // Calculate how many rows are needed
+  const rows = Math.ceil(images.length / imagesPerRow);
+
+  // Calculate the actual width (might be less than MAX_WEBP_WIDTH for the last row)
+  const lastRowImageCount = images.length % imagesPerRow || imagesPerRow;
+  const width = Math.min(AVATAR_SIZE * imagesPerRow, MAX_WEBP_WIDTH);
+  const height = rows * AVATAR_SIZE;
+
+  console.log(
+    `Creating sprite with dimensions ${width}x${height}, ${rows} rows`
+  );
+
   return sharp({
     create: {
-      width: 64 * images.length,
-      height: 64,
+      width: width,
+      height: height,
       channels: 4,
       background: { r: 0, g: 0, b: 0, alpha: 0 },
     },
   })
     .composite(
-      images.map((image, index) => ({
-        input: image,
-        top: 0,
-        left: 64 * index,
-      })),
+      images.map((image, index) => {
+        const row = Math.floor(index / imagesPerRow);
+        const col = index % imagesPerRow;
+
+        return {
+          input: image,
+          top: row * AVATAR_SIZE,
+          left: col * AVATAR_SIZE,
+        };
+      })
     )
     .webp()
     .toBuffer();
@@ -128,8 +149,26 @@ async function saveFiles(spriteBuffer, contributorsData) {
       throw error;
     }
   }
+
+  // Calculate sprite dimensions for the metadata
+  const imagesPerRow = Math.floor(MAX_WEBP_WIDTH / AVATAR_SIZE);
+  const rows = Math.ceil(contributorsData.length / imagesPerRow);
+
+  const metadata = {
+    contributors: contributorsData,
+    sprite: {
+      imagesPerRow,
+      rows,
+      avatarSize: AVATAR_SIZE,
+    },
+  };
+
   await fs.writeFile(outputImage, spriteBuffer);
-  await fs.writeFile(outputJson, JSON.stringify(contributorsData, null, null));
+  await fs.writeFile(outputJson, JSON.stringify(metadata, null, 2));
+
+  console.log(
+    `Sprite created with ${rows} rows and ${imagesPerRow} images per row`
+  );
 }
 
 async function main() {
@@ -138,8 +177,9 @@ async function main() {
     console.log(`Total contributors found: ${contributors.length}`);
     console.log(`Processing ${contributors.length} contributors...`);
 
-    const { images, contributorsData } =
-      await processContributors(contributors);
+    const { images, contributorsData } = await processContributors(
+      contributors
+    );
     const spriteBuffer = await createSpriteImage(images);
     await saveFiles(spriteBuffer, contributorsData);
 

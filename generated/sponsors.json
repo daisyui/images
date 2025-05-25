@@ -113,10 +113,6 @@
       "image": true
     },
     {
-      "name": "Strapi",
-      "image": true
-    },
-    {
       "name": "Adam Slaker",
       "image": false
     },

@@ -553,7 +553,11 @@
       "image": false
     },
     {
-      "name": "Anton",
+      "name": "TypeQuicker",
+      "image": true
+    },
+    {
+      "name": "Mohan Paul",
       "image": false
     }
   ],

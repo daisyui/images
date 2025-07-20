@@ -559,6 +559,10 @@
     {
       "name": "Mohan Paul",
       "image": false
+    },
+    {
+      "name": "Link",
+      "image": true
     }
   ],
   "sprite": {

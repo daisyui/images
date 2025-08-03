@@ -563,6 +563,10 @@
     {
       "name": "Link",
       "image": true
+    },
+    {
+      "name": "Daniel",
+      "image": false
     }
   ],
   "sprite": {

@@ -575,6 +575,10 @@
     {
       "name": "yann",
       "image": false
+    },
+    {
+      "name": "Diógenes Rodrigues",
+      "image": true
     }
   ],
   "sprite": {

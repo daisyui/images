@@ -7,6 +7,7 @@ const outputImage = "../../generated/sponsors.webp";
 const outputJson = "../../generated/sponsors.json";
 const MAX_WEBP_WIDTH = 16383; // Maximum width for WebP images
 const AVATAR_SIZE = 64; // Size of each avatar in pixels
+const GITHUB_TOKEN = process.env.GH_API_KEY;
 
 async function fetchMembers() {
   const response = await fetch(url);
@@ -46,7 +47,11 @@ async function processMembers(members) {
   const membersData = [];
 
   for (const member of members) {
-    const memberData = { name: member.name, image: false };
+    const memberData = {
+      name: member.name,
+      image: false,
+      source: member.source || "opencollective",
+    };
 
     if (member.image) {
       const image = await processMemberImage(member.image, member.name);
@@ -61,6 +66,85 @@ async function processMembers(members) {
   }
 
   return { images, membersData };
+}
+
+// Fetch GitHub sponsors for user/org `saadeghi` using GraphQL API.
+// Requires a token with access to view sponsorships (the sponsorable account's token).
+async function fetchGithubSponsors() {
+  if (!GITHUB_TOKEN) {
+    console.log(
+      "No GitHub token provided via process.env.GH_API_KEY — skipping GitHub sponsors."
+    );
+    return [];
+  }
+
+  const endpoint = "https://api.github.com/graphql";
+  let hasNextPage = true;
+  let cursor = null;
+  const sponsors = [];
+
+  while (hasNextPage) {
+    const query = `
+query($cursor: String) {
+  user(login: "saadeghi") {
+    sponsorshipsAsMaintainer(first: 100, after: $cursor, activeOnly: false) {
+      pageInfo { hasNextPage endCursor }
+      nodes {
+        createdAt
+        sponsorEntity {
+          __typename
+          ... on User { login name avatarUrl }
+          ... on Organization { login name avatarUrl }
+        }
+        privacyLevel
+      }
+    }
+  }
+}`;
+
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        Authorization: `bearer ${GITHUB_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query, variables: { cursor } }),
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(
+        `GitHub GraphQL error: ${res.status} ${res.statusText} - ${text}`
+      );
+    }
+
+    const json = await res.json();
+    const connection =
+      json.data && json.data.user && json.data.user.sponsorshipsAsMaintainer;
+    if (!connection) break;
+
+    const nodes = connection.nodes || [];
+    for (const node of nodes) {
+      const entity = node.sponsorEntity;
+      if (!entity) continue;
+      const name = entity.name || entity.login || "unknown";
+      const avatar = entity.avatarUrl || null;
+      const createdAt = node.createdAt || null;
+      const privacyLevel = node.privacyLevel || null;
+      sponsors.push({
+        name,
+        image: avatar,
+        source: "github",
+        createdAt,
+        privacyLevel,
+      });
+    }
+
+    hasNextPage = connection.pageInfo && connection.pageInfo.hasNextPage;
+    cursor = connection.pageInfo && connection.pageInfo.endCursor;
+  }
+
+  return sponsors;
 }
 
 async function createSpriteImage(images) {
@@ -135,11 +219,29 @@ async function saveFiles(spriteBuffer, membersData) {
 
 async function main() {
   try {
-    const members = await fetchMembers();
-    console.log(`Total members found: ${members.length}`);
-    console.log(`Processing ${members.length} members...`);
+    const ocMembers = await fetchMembers();
+    console.log(`OpenCollective members found: ${ocMembers.length}`);
 
-    const { images, membersData } = await processMembers(members);
+    const ghSponsors = await fetchGithubSponsors();
+    console.log(`GitHub sponsors found: ${ghSponsors.length}`);
+
+    // Merge and dedupe by name (prefer OpenCollective data when present)
+    const combinedMap = new Map();
+    for (const m of ocMembers) {
+      combinedMap.set((m.name || "").toLowerCase(), {
+        ...m,
+        source: "opencollective",
+      });
+    }
+    for (const s of ghSponsors) {
+      const key = (s.name || "").toLowerCase();
+      if (!combinedMap.has(key)) combinedMap.set(key, s);
+    }
+
+    const combined = Array.from(combinedMap.values());
+    console.log(`Total combined sponsors: ${combined.length}`);
+
+    const { images, membersData } = await processMembers(combined);
     const spriteBuffer = await createSpriteImage(images);
     await saveFiles(spriteBuffer, membersData);
 

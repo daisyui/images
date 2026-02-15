@@ -711,6 +711,11 @@
       "source": "github"
     },
     {
+      "name": "Stackable",
+      "image": true,
+      "source": "github"
+    },
+    {
       "name": "levinit",
       "image": true,
       "source": "github"

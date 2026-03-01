@@ -651,6 +651,11 @@
       "source": "github"
     },
     {
+      "name": "The Last Cookie",
+      "image": true,
+      "source": "github"
+    },
+    {
       "name": "Ajay Patel",
       "image": true,
       "source": "github"
@@ -726,17 +731,17 @@
       "source": "github"
     },
     {
+      "name": "Roman Zabaluev",
+      "image": true,
+      "source": "github"
+    },
+    {
       "name": "thanks.dev",
       "image": true,
       "source": "github"
     },
     {
       "name": "Stackable",
-      "image": true,
-      "source": "github"
-    },
-    {
-      "name": "Roman Zabaluev",
       "image": true,
       "source": "github"
     },
@@ -751,12 +756,12 @@
       "source": "github"
     },
     {
-      "name": "levinit",
+      "name": "Zoran Pesic",
       "image": true,
       "source": "github"
     },
     {
-      "name": "Zoran Pesic",
+      "name": "levinit",
       "image": true,
       "source": "github"
     },

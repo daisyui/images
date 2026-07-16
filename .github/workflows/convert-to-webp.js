@@ -36,8 +36,21 @@ const convertToWebP = async (imagePath) => {
   const webpPath = imagePath.replace(/\.(png|jpe?g)$/i, ".webp");
 
   if (!fs.existsSync(webpPath)) {
-    await sharp(imagePath).toFile(webpPath);
-    console.log(`${imagePath} ——→ ${webpPath}`);
+    try {
+      await sharp(imagePath).toFile(webpPath);
+      console.log(`${imagePath} ——→ ${webpPath}`);
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        error.message.includes("too large for the WebP format")
+      ) {
+        fs.rmSync(webpPath, { force: true });
+        console.warn(`Skipping ${imagePath}: ${error.message}`);
+        return;
+      }
+
+      throw error;
+    }
   } else {
     // console.log(`WebP version already exists for ${imagePath}`);
   }

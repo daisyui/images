@@ -1,10 +1,24 @@
 import fs from "node:fs";
 import path from "node:path";
+import { execFileSync } from "node:child_process";
 import sharp from "sharp";
 
+const scriptDirectory = import.meta.dirname;
+const repositoryRoot = path.resolve(scriptDirectory, "../..");
+const sourcePattern = /\.(png|jpe?g)$/i;
+const excludedDirectories = ["images/daisyui-logo", "images/daisyui"];
+
+const toRepositoryPath = (filePath) =>
+  path.relative(repositoryRoot, path.resolve(repositoryRoot, filePath));
+
 const shouldSkipPath = (filePath) => {
-  const excludePaths = ["../../images/daisyui-logo", "../../images/daisyui"];
-  return excludePaths.some((excludePath) => filePath.includes(excludePath));
+  const repositoryPath = toRepositoryPath(filePath);
+
+  return excludedDirectories.some(
+    (directory) =>
+      repositoryPath === directory ||
+      repositoryPath.startsWith(`${directory}${path.sep}`),
+  );
 };
 
 // Function to recursively find all PNG and JPG images
@@ -22,7 +36,7 @@ const findImages = (directory) => {
       }
     } else {
       // Skip processing if the file path matches excluded paths
-      if (!shouldSkipPath(filePath) && file.match(/\.(png|jpe?g)$/i)) {
+      if (!shouldSkipPath(filePath) && sourcePattern.test(file)) {
         images.push(filePath);
       }
     }
@@ -33,41 +47,83 @@ const findImages = (directory) => {
 
 // Function to convert images to WebP
 const convertToWebP = async (imagePath) => {
-  const webpPath = imagePath.replace(/\.(png|jpe?g)$/i, ".webp");
+  const absoluteImagePath = path.resolve(repositoryRoot, imagePath);
+  const webpPath = absoluteImagePath.replace(sourcePattern, ".webp");
+  const temporaryPath = `${webpPath}.${process.pid}.tmp`;
 
-  if (!fs.existsSync(webpPath)) {
-    try {
-      await sharp(imagePath).toFile(webpPath);
-      console.log(`${imagePath} ——→ ${webpPath}`);
-    } catch (error) {
-      if (
-        error instanceof Error &&
-        error.message.includes("too large for the WebP format")
-      ) {
-        fs.rmSync(webpPath, { force: true });
-        console.warn(`Skipping ${imagePath}: ${error.message}`);
-        return;
-      }
+  try {
+    await sharp(absoluteImagePath).webp().toFile(temporaryPath);
+    fs.renameSync(temporaryPath, webpPath);
+    console.log(
+      `${toRepositoryPath(absoluteImagePath)} ——→ ${toRepositoryPath(webpPath)}`,
+    );
+    return webpPath;
+  } catch (error) {
+    fs.rmSync(temporaryPath, { force: true });
 
-      throw error;
+    if (
+      error instanceof Error &&
+      error.message.includes("too large for the WebP format")
+    ) {
+      console.warn(
+        `Skipping ${toRepositoryPath(absoluteImagePath)}: ${error.message}`,
+      );
+      return null;
     }
-  } else {
-    // console.log(`WebP version already exists for ${imagePath}`);
+
+    throw error;
   }
 };
 
-// Main function to process images
-const processImages = (directory) => {
-  const images = findImages(directory);
-  (async () => {
-    for (const image of images) {
-      await convertToWebP(image);
-    }
-  })();
+const getStagedImages = () => {
+  const output = execFileSync(
+    "git",
+    [
+      "diff",
+      "--cached",
+      "--name-only",
+      "--diff-filter=ACMR",
+      "-z",
+      "--",
+      "images",
+    ],
+    { cwd: repositoryRoot },
+  ).toString();
+
+  return output
+    .split("\0")
+    .filter(Boolean)
+    .filter((filePath) => sourcePattern.test(filePath))
+    .filter((filePath) => !shouldSkipPath(filePath));
 };
 
-// Replace '.' with the path to your directory containing images
-const directory = "../../";
+const processImages = async (images, { stageOutputs = false } = {}) => {
+  const outputPaths = [];
 
-// Start processing images
-processImages(directory);
+  for (const image of images) {
+    const outputPath = await convertToWebP(image);
+    if (outputPath) outputPaths.push(outputPath);
+  }
+
+  if (stageOutputs && outputPaths.length > 0) {
+    execFileSync(
+      "git",
+      ["add", "--", ...outputPaths.map(toRepositoryPath)],
+      { cwd: repositoryRoot, stdio: "inherit" },
+    );
+  }
+};
+
+const argumentsList = process.argv.slice(2);
+const stagedOnly = argumentsList[0] === "--staged";
+const requestedImages = stagedOnly ? getStagedImages() : argumentsList;
+const images =
+  requestedImages.length > 0
+    ? requestedImages.filter(
+        (filePath) => sourcePattern.test(filePath) && !shouldSkipPath(filePath),
+      )
+    : stagedOnly
+      ? []
+      : findImages(repositoryRoot);
+
+await processImages(images, { stageOutputs: stagedOnly });

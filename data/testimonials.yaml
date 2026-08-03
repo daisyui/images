@@ -12,7 +12,7 @@
     I've been using it for the past 6 months and can't imagine living without
     it...
   name: Marc Lou
-  username: marc_louvion
+  username: marclou
   bio: Solopreneur
 
 - id: "1620481690148929538"
@@ -83,7 +83,7 @@
 - id: "1538447628400091137"
   content: If you try daisyUI, there is no turning back... 😏
   name: Marc Lou
-  username: marc_louvion
+  username: marclou
   bio: Solopreneur
 
 - id: "1500904082466295810"
@@ -156,12 +156,6 @@
   name: Alexander Thomsen
   username: AlexBThomsen
   bio: Founder of moonbit.ai
-
-- id: "1707143402494873936"
-  content: I would have never touched Tailwind CSS if it wasn't for daisyUI 🤗
-  name: lang
-  username: mgilangjanuar
-  bio: Software developer
 
 - id: "1715485256407777529"
   content: >-
@@ -508,13 +502,6 @@
   name: Ovi Stoica
   username: ovstoica
   bio: Software Developer
-- id: "1899887103947014379"
-  content: >-
-    daisyUI is probably the *best Tailwind Plugin I've ever used*, I've been
-    using it since 2023
-  name: Shaun Furtado
-  username: shaun_furtado
-  bio: JS dev
 - id: "1899818430011736074"
   content: >-
     Can't state how much I love daisyUI ♥️

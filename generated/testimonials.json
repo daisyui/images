@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-05-05T12:12:45.599Z",
+  "generated_at": "2026-08-03T23:06:45.469Z",
   "testimonials": [
     {
       "id": "1633913146422198276",
@@ -12,7 +12,7 @@
       "id": "1534886647850221571",
       "content": "If you want to *build beautiful apps in no time* daisyUI is the way to go ✨ I've been using it for the past 6 months and can't imagine living without it...",
       "name": "Marc Lou",
-      "username": "marc_louvion",
+      "username": "marclou",
       "bio": "Solopreneur"
     },
     {
@@ -28,13 +28,6 @@
       "name": "Scott Spence",
       "username": "spences10",
       "bio": "SvelteSociety London events organiser"
-    },
-    {
-      "id": "1556968894862180354",
-      "content": "We use daisyUI + Tailwind with our projects. It has been *extremely helpful* building websites fast and give us a red design line through several different projects.",
-      "name": "TiiaAurora",
-      "username": "TiiaAurora",
-      "bio": "Tech journalist"
     },
     {
       "id": "1641817678334816257",
@@ -82,7 +75,7 @@
       "id": "1538447628400091137",
       "content": "If you try daisyUI, there is no turning back... 😏",
       "name": "Marc Lou",
-      "username": "marc_louvion",
+      "username": "marclou",
       "bio": "Solopreneur"
     },
     {
@@ -154,13 +147,6 @@
       "name": "Alexander Thomsen",
       "username": "AlexBThomsen",
       "bio": "Founder of moonbit.ai"
-    },
-    {
-      "id": "1707143402494873936",
-      "content": "I would have never touched Tailwind CSS if it wasn't for daisyUI 🤗",
-      "name": "lang",
-      "username": "mgilangjanuar",
-      "bio": "Software developer"
     },
     {
       "id": "1715485256407777529",
@@ -303,6 +289,13 @@
       "bio": "Developer"
     },
     {
+      "id": "1875102579975401498",
+      "content": "Wow, daisyUI v5 is crazy",
+      "name": "nev the dev",
+      "username": "BremNeville",
+      "bio": "Indie web dev"
+    },
+    {
       "id": "1873774608547246239",
       "content": "daisyUI is *so usefull*. My clients love the look, it is so easy",
       "name": "Bailey Burnsed",
@@ -378,6 +371,13 @@
       "name": "Lac Tran An",
       "username": "LacTranAn",
       "bio": "Software craftman"
+    },
+    {
+      "id": "1896259963234005395",
+      "content": "I use daisyUI in every project",
+      "name": "Stu Kennedy",
+      "username": "stukennedymusic",
+      "bio": "AI Solutions Architect"
     },
     {
       "id": "1896193358097535350",
@@ -478,25 +478,11 @@
       "bio": "Software Developer"
     },
     {
-      "id": "1899887103947014379",
-      "content": "daisyUI is probably the *best Tailwind Plugin I've ever used*, I've been using it since 2023",
-      "name": "Shaun Furtado",
-      "username": "shaun_furtado",
-      "bio": "JS dev"
-    },
-    {
       "id": "1899818430011736074",
       "content": "Can't state how much I love daisyUI ♥️",
       "name": "rootkid",
       "username": "rootkid",
       "bio": "Software Developer"
-    },
-    {
-      "id": "1911652832664752410",
-      "content": "DaisyUI just looks amazing.",
-      "name": "Kelvin Htat",
-      "username": "kelvinhtat",
-      "bio": "Solo founder"
     }
   ],
   "sprite": {

@@ -1,49 +1,65 @@
-import sharp from "sharp";
 import fs from "fs/promises";
 import path from "path";
-import yaml from "js-yaml";
+import {
+  createSpritePixels,
+  encodePixelsToAvif,
+  resizeToCoverPixels,
+} from "./image-utils.js";
 
 // Configuration
-const TESTIMONIALS_FILE = "../../data/testimonials.yaml";
-const OUTPUT_IMAGE = "../../generated/x.webp";
-const OUTPUT_JSON = "../../generated/testimonials.json";
+const PROJECT_ROOT = path.resolve(import.meta.dir, "../../..");
+const TESTIMONIALS_FILE = path.join(PROJECT_ROOT, "data/testimonials.yaml");
+const OUTPUT_IMAGE = path.join(PROJECT_ROOT, "generated/x.avif");
+const OUTPUT_JSON = path.join(PROJECT_ROOT, "generated/testimonials.json");
 const IMAGE_SIZE = 72;
-const MAX_WEBP_WIDTH = 16383; // Maximum width for WebP images
+const MAX_AVIF_WIDTH = 16383;
+const REQUEST_DELAY_MS = 100;
 
 async function readTestimonials() {
   console.log("Reading testimonials from file...");
   try {
     const data = await fs.readFile(TESTIMONIALS_FILE, "utf8");
-    const yamlData = yaml.load(data);
+    const yamlData = Bun.YAML.parse(data);
     return yamlData || [];
   } catch (error) {
     throw new Error(`Failed to read testimonials file: ${error.message}`);
   }
 }
 
-function delay(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-async function processAvatar(username) {
+async function processAvatar(username, testimonialId) {
   try {
-    await delay(2000);
+    await Bun.sleep(REQUEST_DELAY_MS);
+    const tweetResponse = await fetch(
+      `https://api.fxtwitter.com/2/status/${encodeURIComponent(testimonialId)}`,
+    );
 
-    const avatarUrl = `https://unavatar.io/x/@${username}?fallback=false&ttl=28d`;
-    const response = await fetch(avatarUrl, {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36",
-      },
-    });
+    if (!tweetResponse.ok) {
+      throw new Error(
+        `Failed to fetch avatar for ${username}: tweet lookup returned ${tweetResponse.status} ${tweetResponse.statusText}`,
+      );
+    }
+
+    const tweetData = await tweetResponse.json();
+    const avatarUrl = tweetData?.status?.author?.avatar_url;
+
+    if (!avatarUrl) {
+      throw new Error(
+        `Failed to fetch avatar for ${username}: tweet lookup did not return an author avatar`,
+      );
+    }
+
+    await Bun.sleep(REQUEST_DELAY_MS);
+    const response = await fetch(avatarUrl);
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch avatar for ${username}`);
+      throw new Error(
+        `Failed to fetch avatar for ${username}: tweet author avatar returned ${response.status} ${response.statusText}`,
+      );
     }
 
     const arrayBuffer = await response.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    return await sharp(buffer).resize(IMAGE_SIZE, IMAGE_SIZE).toBuffer();
+    return await resizeToCoverPixels(buffer, IMAGE_SIZE, IMAGE_SIZE);
   } catch (error) {
     console.error(`Failed to process image for ${username}:`, error);
     throw error; // Re-throw the error instead of returning transparent image
@@ -56,7 +72,7 @@ async function processTestimonials(testimonials) {
 
   for (const testimonial of testimonials) {
     try {
-      const image = await processAvatar(testimonial.username);
+      const image = await processAvatar(testimonial.username, testimonial.id);
       images.push(image);
       successfulTestimonials.push(testimonial);
       console.log(`Processed avatar for: ${testimonial.username}`);
@@ -73,40 +89,27 @@ async function createSpriteImage(images) {
     throw new Error("No images to process");
   }
 
-  // Calculate how many images can fit in a row based on MAX_WEBP_WIDTH
-  const imagesPerRow = Math.floor(MAX_WEBP_WIDTH / IMAGE_SIZE);
+  // Calculate how many images can fit in a row based on MAX_AVIF_WIDTH
+  const imagesPerRow = Math.floor(MAX_AVIF_WIDTH / IMAGE_SIZE);
   // Calculate how many rows are needed
   const rows = Math.ceil(images.length / imagesPerRow);
   
-  // Calculate the actual width (might be less than MAX_WEBP_WIDTH for the last row)
+  // Calculate the actual width (might be less than MAX_AVIF_WIDTH for the last row)
   const lastRowImageCount = images.length % imagesPerRow || imagesPerRow;
-  const width = Math.min(IMAGE_SIZE * imagesPerRow, MAX_WEBP_WIDTH);
+  const width = Math.min(IMAGE_SIZE * imagesPerRow, MAX_AVIF_WIDTH);
   const height = rows * IMAGE_SIZE;
   
   console.log(`Creating sprite with dimensions ${width}x${height}, ${rows} rows`);
   
-  return sharp({
-    create: {
-      width: width,
-      height: height,
-      channels: 4,
-      background: { r: 0, g: 0, b: 0, alpha: 0 },
-    },
-  })
-    .composite(
-      images.map((image, index) => {
-        const row = Math.floor(index / imagesPerRow);
-        const col = index % imagesPerRow;
-        
-        return {
-          input: image,
-          top: row * IMAGE_SIZE,
-          left: col * IMAGE_SIZE,
-        };
-      })
-    )
-    .webp({ quality: 100 })
-    .toBuffer();
+  const pixels = createSpritePixels(images, {
+    imageWidth: IMAGE_SIZE,
+    imageHeight: IMAGE_SIZE,
+    imagesPerRow,
+    width,
+    height,
+  });
+
+  return encodePixelsToAvif(pixels, width, height, { quality: 80 });
 }
 
 async function saveFile(spriteBuffer) {
@@ -132,7 +135,7 @@ async function saveJson(testimonials) {
   }
 
   // Calculate sprite dimensions for the metadata
-  const imagesPerRow = Math.floor(MAX_WEBP_WIDTH / IMAGE_SIZE);
+  const imagesPerRow = Math.floor(MAX_AVIF_WIDTH / IMAGE_SIZE);
   const rows = Math.ceil(testimonials.length / imagesPerRow);
 
   const outputData = {

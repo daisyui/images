@@ -1,0 +1,37 @@
+name: Generate OpenGraph images
+
+on:
+  workflow_dispatch:
+
+jobs:
+  generate-images:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.github/workflows/node_modules/.cache/ms-playwright
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v1.2.2
+
+      - name: Install dependencies
+        working-directory: .github/workflows
+        run: bun install --no-save
+
+      - name: Install Chromium
+        working-directory: .github/workflows
+        run: bunx playwright install --with-deps chromium
+
+      - name: Generate images
+        id: generate
+        run: bun .github/workflows/scripts/generate-opengraph-images.js
+
+      - name: Upload images
+        uses: actions/upload-artifact@v4
+        with:
+          name: opengraph-images
+          path: ${{ steps.generate.outputs.paths }}
+          if-no-files-found: error

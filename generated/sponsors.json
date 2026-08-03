@@ -636,11 +636,6 @@
       "source": "github"
     },
     {
-      "name": "Garry Lowther",
-      "image": true,
-      "source": "github"
-    },
-    {
       "name": "Andrew K",
       "image": true,
       "source": "github"
@@ -706,6 +701,11 @@
       "source": "github"
     },
     {
+      "name": "Garry Lowther",
+      "image": true,
+      "source": "github"
+    },
+    {
       "name": "Spencer Ferris",
       "image": true,
       "source": "github"
@@ -756,12 +756,22 @@
       "source": "github"
     },
     {
+      "name": "Zane Helton",
+      "image": true,
+      "source": "github"
+    },
+    {
       "name": "Stackable",
       "image": true,
       "source": "github"
     },
     {
       "name": "陈杨文",
+      "image": true,
+      "source": "github"
+    },
+    {
+      "name": "Zoran Pesic",
       "image": true,
       "source": "github"
     },
@@ -777,16 +787,6 @@
     },
     {
       "name": "levinit",
-      "image": true,
-      "source": "github"
-    },
-    {
-      "name": "Zoran Pesic",
-      "image": true,
-      "source": "github"
-    },
-    {
-      "name": "Zane Helton",
       "image": true,
       "source": "github"
     }

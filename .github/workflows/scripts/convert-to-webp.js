@@ -1,12 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
-import sharp from "sharp";
 
 const scriptDirectory = import.meta.dirname;
-const repositoryRoot = path.resolve(scriptDirectory, "../..");
+const repositoryRoot = path.resolve(scriptDirectory, "../../..");
 const sourcePattern = /\.(png|jpe?g)$/i;
 const excludedDirectories = ["images/daisyui-logo", "images/daisyui"];
+const maxWebpDimension = 16383;
+const imageInputOptions = Object.freeze({ autoOrient: false });
 
 const toRepositoryPath = (filePath) =>
   path.relative(repositoryRoot, path.resolve(repositoryRoot, filePath));
@@ -52,7 +53,17 @@ const convertToWebP = async (imagePath) => {
   const temporaryPath = `${webpPath}.${process.pid}.tmp`;
 
   try {
-    await sharp(absoluteImagePath).webp().toFile(temporaryPath);
+    const image = new Bun.Image(absoluteImagePath, imageInputOptions);
+    const { width, height } = await image.metadata();
+
+    if (width > maxWebpDimension || height > maxWebpDimension) {
+      console.warn(
+        `Skipping ${toRepositoryPath(absoluteImagePath)}: Image is too large for the WebP format`,
+      );
+      return null;
+    }
+
+    await image.webp().write(temporaryPath);
     fs.renameSync(temporaryPath, webpPath);
     console.log(
       `${toRepositoryPath(absoluteImagePath)} ——→ ${toRepositoryPath(webpPath)}`,

@@ -7,14 +7,8 @@ cd "$repository_root"
 
 if ! command -v bun >/dev/null 2>&1; then
   echo "WebP conversion requires Bun. Install Bun, then run:" >&2
-  echo "  bun install --cwd .github/workflows --no-save" >&2
+  echo "  https://bun.com/docs/installation" >&2
   exit 1
 fi
 
-if [ ! -d ".github/workflows/node_modules/sharp" ]; then
-  echo "WebP conversion dependencies are missing. Run:" >&2
-  echo "  bun install --cwd .github/workflows --no-save" >&2
-  exit 1
-fi
-
-bun .github/workflows/convert-to-webp.js --staged
+bun .github/workflows/scripts/convert-to-webp.js --staged

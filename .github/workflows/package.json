@@ -5,13 +5,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "convert:webp": "bun convert-to-webp.js"
+    "convert:webp": "bun scripts/convert-to-webp.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "js-yaml": "^4.1.0",
-    "sharp": "^0.33.4"
+    "playwright": "^1.62.1"
   }
 }

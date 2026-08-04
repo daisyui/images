@@ -3,16 +3,16 @@ import path from "path";
 import {
   createSpritePixels,
   createTransparentPixels,
-  encodePixelsToAvif,
+  encodePixelsToWebp,
   resizeToCoverPixels,
 } from "./image-utils.js";
 
 // Configuration
 const GH_API_KEY = process.env.GH_API_KEY;
-const outputImage = "../../generated/contributors.avif";
+const outputImage = "../../generated/contributors.webp";
 const outputJson = "../../generated/contributors.json";
 const PER_PAGE = 100;
-const MAX_AVIF_WIDTH = 16383;
+const MAX_WEBP_WIDTH = 16383;
 const AVATAR_SIZE = 64; // Size of each avatar in pixels
 
 const createGithubApiUrl = (page) =>
@@ -98,14 +98,14 @@ async function processContributors(contributors) {
 }
 
 async function createSpriteImage(images) {
-  // Calculate how many images can fit in a row based on MAX_AVIF_WIDTH
-  const imagesPerRow = Math.floor(MAX_AVIF_WIDTH / AVATAR_SIZE);
+  // Calculate how many images can fit in a row based on MAX_WEBP_WIDTH
+  const imagesPerRow = Math.floor(MAX_WEBP_WIDTH / AVATAR_SIZE);
   // Calculate how many rows are needed
   const rows = Math.ceil(images.length / imagesPerRow);
 
-  // Calculate the actual width (might be less than MAX_AVIF_WIDTH for the last row)
+  // Calculate the actual width (might be less than MAX_WEBP_WIDTH for the last row)
   const lastRowImageCount = images.length % imagesPerRow || imagesPerRow;
-  const width = Math.min(AVATAR_SIZE * imagesPerRow, MAX_AVIF_WIDTH);
+  const width = Math.min(AVATAR_SIZE * imagesPerRow, MAX_WEBP_WIDTH);
   const height = rows * AVATAR_SIZE;
 
   console.log(
@@ -120,7 +120,7 @@ async function createSpriteImage(images) {
     height,
   });
 
-  return encodePixelsToAvif(pixels, width, height, { quality: 80 });
+  return encodePixelsToWebp(pixels, width, height, { quality: 80 });
 }
 
 async function saveFiles(spriteBuffer, contributorsData) {
@@ -134,7 +134,7 @@ async function saveFiles(spriteBuffer, contributorsData) {
   }
 
   // Calculate sprite dimensions for the metadata
-  const imagesPerRow = Math.floor(MAX_AVIF_WIDTH / AVATAR_SIZE);
+  const imagesPerRow = Math.floor(MAX_WEBP_WIDTH / AVATAR_SIZE);
   const rows = Math.ceil(contributorsData.length / imagesPerRow);
 
   const metadata = {

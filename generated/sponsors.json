@@ -641,11 +641,6 @@
       "source": "github"
     },
     {
-      "name": "Bakir Gracić",
-      "image": true,
-      "source": "github"
-    },
-    {
       "name": "Zubair Ibn Zamir",
       "image": true,
       "source": "github"
@@ -691,6 +686,11 @@
       "source": "github"
     },
     {
+      "name": "Bakir Gracić",
+      "image": true,
+      "source": "github"
+    },
+    {
       "name": "Tricked",
       "image": true,
       "source": "github"
@@ -731,12 +731,12 @@
       "source": "github"
     },
     {
-      "name": "Alan Mendelevich",
+      "name": "lew",
       "image": true,
       "source": "github"
     },
     {
-      "name": "Lachlan Collins",
+      "name": "Alan Mendelevich",
       "image": true,
       "source": "github"
     },
@@ -746,7 +746,7 @@
       "source": "github"
     },
     {
-      "name": "Roman Zabaluev",
+      "name": "Lachlan Collins",
       "image": true,
       "source": "github"
     },
@@ -756,7 +756,22 @@
       "source": "github"
     },
     {
+      "name": "Zane Helton",
+      "image": true,
+      "source": "github"
+    },
+    {
       "name": "Stackable",
+      "image": true,
+      "source": "github"
+    },
+    {
+      "name": "Roman Zabaluev",
+      "image": true,
+      "source": "github"
+    },
+    {
+      "name": "Zoran Pesic",
       "image": true,
       "source": "github"
     },
@@ -771,22 +786,7 @@
       "source": "github"
     },
     {
-      "name": "Zoran Pesic",
-      "image": true,
-      "source": "github"
-    },
-    {
       "name": "levinit",
-      "image": true,
-      "source": "github"
-    },
-    {
-      "name": "Zane Helton",
-      "image": true,
-      "source": "github"
-    },
-    {
-      "name": "lew",
       "image": true,
       "source": "github"
     }
